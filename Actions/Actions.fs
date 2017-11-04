@@ -16,7 +16,14 @@ module Actions =
     let rec private bind f = function
     | Free x -> x |> mapI (bind f) |> Free
     | Pure x -> f x
-        
+    
+    let rec unbind = function 
+    | Pure () -> Pure ()
+    | Free (Invoke (x, next)) ->
+        match next () with
+        | Pure () -> Pure ()
+        | free -> Free (Invoke (x, fun () -> unbind free))
+    
     let private invoke a = Free (Invoke (a, Pure))
 
     let abort = Pure ()

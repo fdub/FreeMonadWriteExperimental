@@ -36,6 +36,9 @@ namespace FreeMonadWrite
                     case 'w':
                     case 'W':
                         return (true, Actions.bindInvoke(() => writer.Write(command.Substring(1)), program));
+                    case 'u':
+                    case 'U':
+                        return (true, Actions.unbind(program));
                     case 'a':
                     case 'A':
                         return (false, Actions.abort);
